@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz App — Simple and Human-like</title>
+<style>
+  :root{
+    --bg:#0f172a;
+    --panel:#111827;
+    --text:#e5e7eb;
+    --muted:#9ca3af;
+    --brand:#22d3ee;
+    --shadow:0 10px 30px rgba(0,0,0,.35);
+    --radius:18px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  body{
+    font-family: 'Vazirmatn', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    justify-content:center;
+    padding:20px;
+  }
+  .app{width:min(900px,95vw);}
+  .card{
+    background: var(--panel);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin-bottom:20px;
+  }
+  h1,h2{margin-bottom:12px}
+  .question{margin:16px 0}
+  .options{list-style:none; padding:0; display:flex; flex-direction:column; gap:8px}
+  .options li{
+    background:rgba(255,255,255,.05);
+    padding:10px 14px;
+    border-radius:12px;
+    cursor:pointer;
+    transition:0.2s;
+  }
+  .options li:hover{background:var(--brand); color:#0b1020}
+  .options li.selected{border:2px solid var(--brand);}
+  .btn{
+    margin-top:12px;
+    padding:10px 16px;
+    border-radius:14px;
+    border:none;
+    cursor:pointer;
+    font-weight:600;
+    background:linear-gradient(135deg, var(--brand), #60a5fa);
+    color:#0b1020;
+    transition:.2s;
+  }
+  .btn:disabled{opacity:.6; cursor:not-allowed;}
+  .result{margin-top:16px; font-weight:700;}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="card">
+    <h1>Multiple Choice Quiz</h1>
+    <div id="quiz-container"></div>
+    <button id="nextBtn" class="btn">Next</button>
+    <div id="score" class="result"></div>
+  </div>
+</div>
+<script>
+const questions = [
+  {q:'Which consensus algorithm does XOS use?', opts:['Pos','Pow asic','Pow non_asic'], answer:0},
+  {q:'What hardware is needed to run a full node?', opts:['Hi performance server','Mining rig','Regular computer or Raspberry Pi'], answer:2},
+  {q:'Which XOS advantage compared to POW-era Ethereum is incorrect?', opts:['stronger intercontinental propagation','smaller full nodes','ASIC resistant'], answer:2}
+];
+
+let currentIndex = 0;
+let score = 0;
+
+const container = document.getElementById('quiz-container');
+const nextBtn = document.getElementById('nextBtn');
+const scoreEl = document.getElementById('score');
+
+function loadQuestion(){
+  container.innerHTML = '';
+  scoreEl.textContent = '';
+  const q = questions[currentIndex];
+  const qEl = document.createElement('div'); qEl.className='question'; qEl.textContent = q.q;
+  const ul = document.createElement('ul'); ul.className='options';
+  q.opts.forEach((opt,i)=>{
+    const li = document.createElement('li'); li.textContent = opt;
+    li.addEventListener('click',()=>{
+      [...ul.children].forEach(c=>c.classList.remove('selected'));
+      li.classList.add('selected');
+    });
+    ul.appendChild(li);
+  });
+  container.appendChild(qEl);
+  container.appendChild(ul);
+  if(currentIndex === questions.length-1){ nextBtn.textContent='Finish'; }
+}
+
+nextBtn.addEventListener('click',()=>{
+  const selected = document.querySelector('.options li.selected');
+  if(!selected) return alert('Please select an option');
+  const answerIndex = [...selected.parentNode.children].indexOf(selected);
+  if(answerIndex === questions[currentIndex].answer){ score++; }
+  currentIndex++;
+  if(currentIndex < questions.length){ loadQuestion(); }
+  else{
+    container.innerHTML = '<h2>Quiz Completed</h2>';
+    nextBtn.disabled = true;
+    scoreEl.textContent = `Your score: ${score} out of ${questions.length}`;
+  }
+});
+
+loadQuestion();
+</script>
+</body>
+</html>
