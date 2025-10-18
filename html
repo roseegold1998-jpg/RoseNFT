@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Converter Pro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="converter-container">
+        <h1>Currency Converter</h1>
+        
+        <div class="converter-box">
+            <input type="number" id="amount" placeholder="Enter amount" />
+
+            <div class="dropdowns">
+                <select id="from-currency"></select>
+                <span class="arrow">→</span>
+                <select id="to-currency"></select>
+            </div>
+
+            <button id="convert-btn">Convert</button>
+            <div id="result"></div>
+        </div>
+
+        <p class="footer-text">Real-time exchange rates updated live</p>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
