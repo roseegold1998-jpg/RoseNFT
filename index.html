@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DailyFocus</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #a7ff83, #17b978);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #fff;
+      text-align: center;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 2.2em;
+      margin-bottom: 10px;
+    }
+
+    .quote {
+      font-style: italic;
+      font-size: 1.1em;
+      margin: 15px 0;
+    }
+
+    input {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 10px;
+      width: 250px;
+      outline: none;
+      font-size: 1em;
+      text-align: center;
+      margin-top: 5px;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 25px;
+      background: #fff;
+      color: #17b978;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #e6ffe6;
+    }
+
+    .goal {
+      margin-top: 20px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>🌿 Daily Focus</h1>
+  <div class="quote" id="quote"></div>
+
+  <input type="text" id="goalInput" placeholder="Enter your goal for today...">
+  <button onclick="saveGoal()">Save Goal</button>
+
+  <div class="goal" id="savedGoal"></div>
+
+  <script>
+    const quotes = [
+      "Start where you are. Use what you have. Do what you can.",
+      "Focus on progress, not perfection.",
+      "Small steps every day lead to big results.",
+      "Discipline is the bridge between goals and accomplishment.",
+      "You become what you think about most of the time."
+    ];
+
+    function randomQuote() {
+      const quote = quotes[Math.floor(Math.random() * quotes.length)];
+      document.getElementById('quote').innerText = quote;
+    }
+
+    function saveGoal() {
+      const goal = document.getElementById('goalInput').value.trim();
+      if (goal) {
+        localStorage.setItem('dailyGoal', goal);
+        displayGoal();
+      }
+    }
+
+    function displayGoal() {
+      const savedGoal = localStorage.getItem('dailyGoal');
+      if (savedGoal) {
+        document.getElementById('savedGoal').innerText = "🎯 Today's Goal: " + savedGoal;
+      } else {
+        document.getElementById('savedGoal').innerText = "";
+      }
+    }
+
+    randomQuote();
+    displayGoal();
+  </script>
+</body>
+</html>
