@@ -1,0 +1,70 @@
+const quotes = [
+  "Start where you are. Use what you have. Do what you can.",
+  "Focus on progress, not perfection.",
+  "Small steps every day lead to big results.",
+  "Discipline is the bridge between goals and accomplishment.",
+  "You become what you think about most of the time."
+];
+
+const quoteEl = document.getElementById('quote');
+const goalInput = document.getElementById('goalInput');
+const saveBtn = document.getElementById('saveBtn');
+const clearBtn = document.getElementById('clearBtn');
+const goalList = document.getElementById('goalList');
+const darkModeBtn = document.getElementById('darkModeBtn');
+
+// Load random quote
+function showQuote() {
+  const quote = quotes[Math.floor(Math.random() * quotes.length)];
+  quoteEl.innerText = quote;
+}
+showQuote();
+
+// Load saved goals
+function loadGoals() {
+  const goals = JSON.parse(localStorage.getItem('dailyGoals')) || [];
+  renderGoals(goals);
+}
+
+// Render goals
+function renderGoals(goals) {
+  goalList.innerHTML = '';
+  goals.forEach((goal, index) => {
+    const div = document.createElement('div');
+    div.classList.add('goal-item');
+    div.innerHTML = `${goal} <button onclick="deleteGoal(${index})">✕</button>`;
+    goalList.appendChild(div);
+  });
+}
+
+// Save goal
+saveBtn.addEventListener('click', () => {
+  const goal = goalInput.value.trim();
+  if (!goal) return;
+  const goals = JSON.parse(localStorage.getItem('dailyGoals')) || [];
+  goals.push(goal);
+  localStorage.setItem('dailyGoals', JSON.stringify(goals));
+  goalInput.value = '';
+  renderGoals(goals);
+});
+
+// Delete goal
+function deleteGoal(index) {
+  const goals = JSON.parse(localStorage.getItem('dailyGoals')) || [];
+  goals.splice(index,1);
+  localStorage.setItem('dailyGoals', JSON.stringify(goals));
+  renderGoals(goals);
+}
+
+// Clear all goals
+clearBtn.addEventListener('click', () => {
+  localStorage.removeItem('dailyGoals');
+  renderGoals([]);
+});
+
+// Dark mode toggle
+darkModeBtn.addEventListener('click', () => {
+  document.body.classList.toggle('dark-mode');
+});
+
+loadGoals();
